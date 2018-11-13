@@ -7,31 +7,27 @@ package com.mycompany.jsp.mvc;
 
 /**
  *
- * @author Matthias
+ * @author Ludovic
  */
-public class DiscountEntity {
-	// TODO : ajouter les autres propriétés
+public class Entity {
+    
 	private String Code;
 	private float Taux;
 
-	public DiscountEntity(String Code,float Taux) {
+	public Entity(String Code,float Taux) {
 		this.Code = Code;
 		this.Taux = Taux;
 	}
 
 	/**
-	 * Get the value of customerId
-	 *
-	 * @return the value of customerId
+         * Retourne la lettre sous forme string
 	 */
 	public String getCode() {
 		return Code;
 	}
 
 	/**
-	 * Get the value of name
-	 *
-	 * @return the value of name
+	 * Retourne le taux sous un float
 	 */
 	public Float getTaux() {
 		return Taux;

@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author Matthias
+ * @author Ludovic
  */
 public class DAO {
     protected final DataSource myDataSource;
@@ -33,7 +33,7 @@ public class DAO {
         
         public int deleteDiscount_Code(String Code) throws Exception {
 
-		// Une requête SQL paramétrée
+		// Requête de suppression du discount code
 		String sql = "DELETE FROM DISCOUNT_CODE AS AUX WHERE DISCOUNT_CODE= ?";
 		try (   Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)
@@ -49,9 +49,10 @@ public class DAO {
 		}
 	}
         
+        
         public int updateDiscount_Code(String code,Float taux) throws Exception {
 
-		// Une requête SQL paramétrée
+		// Requête de la mise à jour de la base de données
 		String sql = "UPDATE APP.DISCOUNT_CODE SET RATE = ? WHERE DISCOUNT_CODE = ?";
 		try (   Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)
@@ -68,9 +69,10 @@ public class DAO {
 		}
 	}
         
+        
         public int addDiscount_Code(String Code, float Taux) throws Exception {
 
-		// Une requête SQL paramétrée
+		// Requête ajout discount code dans base de données
 		String sql = "INSERT INTO DISCOUNT_CODE VALUES (?,?)";
 		try (   Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)
@@ -86,9 +88,12 @@ public class DAO {
 			throw new Exception(ex.getMessage());
 		}
 	}
-        public List<DiscountEntity> ListOfDiscount() throws Exception {
-		List<DiscountEntity> result = new LinkedList<>(); // Liste vIde
+        
+        
+        public List<Entity> ListOfDiscount() throws Exception {
+		List<Entity> result = new LinkedList<>();
 
+                // Récupération des discount codes
 		String sql = "SELECT * FROM DISCOUNT_CODE";
 		try (Connection connection = myDataSource.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -97,7 +102,7 @@ public class DAO {
 				while (rs.next()) { // Tant qu'il y a des enregistrements
 					String Code = rs.getString("DISCOUNT_CODE");
                                         float Taux = rs.getFloat("RATE");
-                                        DiscountEntity DE = new DiscountEntity(Code,Taux);
+                                        Entity DE = new Entity(Code,Taux);
 					result.add(DE);
 				}
 			}

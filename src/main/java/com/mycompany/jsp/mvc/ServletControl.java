@@ -18,18 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Matthias
+ * @author Ludovic
  */
-public class Servlet extends HttpServlet {
+public class ServletControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
@@ -40,9 +35,8 @@ public class Servlet extends HttpServlet {
         String erreur = "";
         
         DAO dao = new DAO(DataSourceFactory.getDataSource());
-        // On renseigne un attribut utilisé par la vue
-        // On redirige vers la vue
         
+        // Si on demande un ajout
         if ("ADD".equals(action)) {
             try{
                 dao.addDiscount_Code(code, Float.parseFloat(taux));
@@ -51,19 +45,22 @@ public class Servlet extends HttpServlet {
                 dao.updateDiscount_Code(code, Float.parseFloat(taux));
             }
         } 
+        // Si on demande la suppression
         if ("DELETE".equals(action)) {
             try {
                 dao.deleteDiscount_Code(code);
             }
             catch (Exception s){
-               erreur = "Impossible de supprimer " + code + ", ce code est déjà utilisé.";
+               erreur = "Impossible de supprimer " + code + ", ce code est utilisé.";
             }
         } 
         
-        List<DiscountEntity> Discount = dao.ListOfDiscount();
+        List<Entity> Discount = dao.ListOfDiscount();
+        
         request.setAttribute("Discounts", Discount);
         request.setAttribute("Error",erreur);
-        request.getRequestDispatcher("DiscountJSP.jsp").forward(request, response);
+        
+        request.getRequestDispatcher("Vue.jsp").forward(request, response);
 
     }
 
@@ -83,7 +80,7 @@ public class Servlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServletControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -101,7 +98,7 @@ public class Servlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServletControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
